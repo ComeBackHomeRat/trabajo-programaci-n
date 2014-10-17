@@ -13,10 +13,10 @@ def ventanap():
     vx,vy=0,0
     y=0
     x=0
-    #m1=pygame.image.load("ladrillo.jpg")
-    #rectangulom1= m1.get_rect()
-    #rectangulom1.left=50
-    #rectangulom1.top=50
+    m1=pygame.image.load("ladrillo.jpg")
+    rectangulom1= m1.get_rect()
+    rectangulom1.left=50
+    rectangulom1.top=50
     spriteraton=pygame.sprite.Sprite()
     spriteraton.image=raton
     spriteraton.rect=raton.get_rect()
@@ -46,8 +46,8 @@ def ventanap():
        
         reloj1.tick(20)
         pantalla.blit(fondo, (0, 0))
-        #pantalla.blit(m1,rectangulom1)
-        pantalla.blit(spriteraton.image, spriteraton.rect)
+        pantalla.blit(m1,rectangulom1)
+        pantalla.blit(spriteraton.image, (x,y))
         pantalla.blit(info, (5,5))
         segundos=pygame.time.get_ticks()/1000
         segundos=str(segundos)
