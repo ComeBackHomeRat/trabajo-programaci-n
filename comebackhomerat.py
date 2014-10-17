@@ -48,7 +48,11 @@ def ventanap():#ventana principal
                 spriteraton.rect.top = 0
                     
         x+=vx#velocidad en x
+        if x<0 or x>500:
+            x-=vx
         y+=vy#velocidad en y
+        if y<0 or y>300:
+            y-=vy
        
         reloj1.tick(20)#definir a 2o fps
         pantalla.blit(fondo, (0, 0))
