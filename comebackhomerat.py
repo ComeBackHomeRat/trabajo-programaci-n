@@ -15,7 +15,9 @@ def ventanap():#ventana principal
     vx,vy=0,0
     y=0
     x=0
-    
+#---------------------
+# situar las barreras del laberinto
+#---------------------
     m1=pygame.image.load("ladrillo.jpg")#imágen obstaculo
     rectangulom1= m1.get_rect()#rectangulo del obstaculo
     rectangulom1.left=0
@@ -24,6 +26,50 @@ def ventanap():#ventana principal
     rn1=m1.get_rect()
     rn1.left=0
     rn1.top=46
+    o1=pygame.image.load("ladrillo3.jpg")
+    ro1=o1.get_rect()
+    ro1.left=142
+    ro1.top=94
+    o2=o1
+    ro2=o2.get_rect()
+    ro2.left=142
+    ro2.top=211
+    o3=o1
+    ro3=o3.get_rect()
+    ro3.top=328
+    ro3.left=142
+    o4=o1
+    ro4=o4.get_rect()
+    ro4.left=142
+    ro4.top=445
+    o5=o1
+    ro5=o5.get_rect()
+    ro5.left=284
+    ro5.top=152
+    o6=o1
+    ro6=o6.get_rect()
+    ro6.left=284
+    ro6.top=268
+    o7=o1
+    ro7=o7.get_rect()
+    ro7.left=284
+    ro7.top=384
+    o9=o1
+    ro9=o9.get_rect()
+    ro9.left=426
+    ro9.top=94
+    o10=o1
+    ro10=o1.get_rect()
+    ro10.left=426
+    ro10.top=211
+    o11=o1
+    ro11=o11.get_rect()
+    ro11.left=426
+    ro11.top=328
+    o12=o1
+    ro12=o12.get_rect()
+    ro12.left=426
+    ro12.top=445
     m2=m1
     rm2=m2.get_rect()
     rm2.left=71
@@ -161,6 +207,37 @@ def ventanap():#ventana principal
     rn8.left=0
     rn8.top=543
     n9=n1
+    rn9=n9.get_rect()
+    rn9.left=877
+    rn9.top=46
+    n10=n1
+    rn10=n10.get_rect()
+    rn10.left=877
+    rn10.top=117
+    n11=n1
+    rn11=n11.get_rect()
+    rn11.left=877
+    rn11.top=188
+    n12=n1
+    rn12=n12.get_rect()
+    rn12.left=877
+    rn12.top=259
+    n13=n1
+    rn13=n13.get_rect()
+    rn13.left=877
+    rn13.top=330
+    n14=n1
+    rn14=n14.get_rect()
+    rn14.left=877
+    rn14.top=401
+    n15=n1
+    rn15=n15.get_rect()
+    rn15.left=877
+    rn15.top=472
+    n16=n1
+    rn16=n16.get_rect()
+    rn16.left=877
+    rn16.top=543
 
     
     spriteraton=pygame.sprite.Sprite()#sprite del ratón
@@ -237,7 +314,25 @@ def ventanap():#ventana principal
         pantalla.blit(n6,rn6)
         pantalla.blit(n7,rn7)
         pantalla.blit(n8,rn8)
-
+        pantalla.blit(n9,rn9)
+        pantalla.blit(n10,rn10)
+        pantalla.blit(n11,rn11)
+        pantalla.blit(n12,rn12)
+        pantalla.blit(n13,rn13)
+        pantalla.blit(n14,rn14)
+        pantalla.blit(n15,rn15)
+        pantalla.blit(n16,rn16)
+        pantalla.blit(o1,ro1)
+        pantalla.blit(o2,ro2)
+        pantalla.blit(o3,ro3)
+        pantalla.blit(o4,ro4)
+        pantalla.blit(o5,ro5)
+        pantalla.blit(o6,ro6)
+        pantalla.blit(o7,ro7)
+        pantalla.blit(o9,ro9)
+        pantalla.blit(o10,ro10)
+        pantalla.blit(o11,ro11)
+        pantalla.blit(o12,ro12)
         #pantalla.blit(spriteraton.image, (x,y))
         #pantalla.blit(info, (5,5))
         segundos=pygame.time.get_ticks()/1000
