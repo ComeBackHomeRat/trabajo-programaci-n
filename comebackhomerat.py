@@ -70,6 +70,34 @@ def ventanap():#ventana principal
     ro12=o12.get_rect()
     ro12.left=426
     ro12.top=445
+    o13=o1
+    ro13=o13.get_rect()
+    ro13.left=568
+    ro13.top=152
+    o14=o1
+    ro14=o14.get_rect()
+    ro14.left=568
+    ro14.top=268
+    o15=o1
+    ro15=o15.get_rect()
+    ro15.left=568
+    ro15.top=384
+    o16=o1
+    ro16=o16.get_rect()
+    ro16.left=710
+    ro16.top=94
+    o17=o1
+    ro17=o17.get_rect()
+    ro17.left=710
+    ro17.top=211
+    o18=o1
+    ro18=o18.get_rect()
+    ro18.left=710
+    ro18.top=328
+    o19=o1
+    ro19=o19.get_rect()
+    ro19.left=710
+    ro19.top=445
     m2=m1
     rm2=m2.get_rect()
     rm2.left=71
@@ -278,6 +306,9 @@ def ventanap():#ventana principal
         
         reloj1.tick(20)#definir a 2o fps
         pantalla.blit(fondo, (0, 0))
+#--------------------------------
+# impresion de obstaculos
+#--------------------------------
         pantalla.blit(m1,rectangulom1)
         pantalla.blit(m2,rm2)
         pantalla.blit(m3,rm3)
@@ -333,12 +364,19 @@ def ventanap():#ventana principal
         pantalla.blit(o10,ro10)
         pantalla.blit(o11,ro11)
         pantalla.blit(o12,ro12)
-        #pantalla.blit(spriteraton.image, (x,y))
-        #pantalla.blit(info, (5,5))
+        pantalla.blit(o13,ro13)
+        pantalla.blit(o14,ro14)
+        pantalla.blit(o15,ro15)
+        pantalla.blit(o16,ro16)
+        pantalla.blit(o17,ro17)
+        pantalla.blit(o18,ro18)
+        pantalla.blit(o19,ro19)
+        pantalla.blit(spriteraton.image, (x,y))
+        pantalla.blit(info, (5,5))
         segundos=pygame.time.get_ticks()/1000
         segundos=str(segundos)
         contador=fuente1.render(segundos,0,(255,255,255))#contador para la pantalla
-        #pantalla.blit(contador,(100,5))
+        pantalla.blit(contador,(100,5))
         pygame.display.flip()
         pygame.display.update()
     pygame.quit()
