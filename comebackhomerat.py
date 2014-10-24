@@ -2,6 +2,15 @@ import pygame
 import random
 import sys
 from pygame.locals import*
+
+def imprimir(superficie,imagen,lista):
+    for e in lista:
+            superficie.blit(imagen,e)
+
+def colision(sprite,listarec):
+    if sprite.rect.collidelist(listarec)>(-1):
+        sprite.rect.left,sprite.rect.top=sprite.oldx,sprite.oldy
+
 def ventanap():#ventana principal
     SCREEN_WIDTH=923
     SCREEN_HEIGHT=600
@@ -13,17 +22,19 @@ def ventanap():#ventana principal
     raton = pygame.image.load("ratonf.png").convert_alpha()#imágen ratón
     fondo=pygame.image.load("fondohojas.jpg").convert()#fondo
     vx,vy=0,0
-    y=0
-    x=0
+    y=50
+    x=50
+
+
 #---------------------
 # situar las barreras del laberinto
 #---------------------
     m1=pygame.image.load("ladrillo.jpg")#imágen obstaculo
-    rectangulom1= m1.get_rect()#rectangulo del obstaculo
-    rectangulom1.left=0
-    rectangulom1.top=0
+    rm1= m1.get_rect()#rectangulo del obstaculo
+    rm1.left=0
+    rm1.top=0
     n1=pygame.image.load("ladrillo2.jpg")
-    rn1=m1.get_rect()
+    rn1=n1.get_rect()
     rn1.left=0
     rn1.top=46
     o1=pygame.image.load("ladrillo3.jpg")
@@ -266,13 +277,111 @@ def ventanap():#ventana principal
     rn16=n16.get_rect()
     rn16.left=877
     rn16.top=543
-
+    l_ro = [
+        ro1,
+        ro2,
+        ro3,
+        ro4,
+        ro5,
+        ro6,
+        ro7,
+        ro9,
+        ro10,
+        ro11,
+        ro12,
+        ro13,
+        ro14,
+        ro15,
+        ro16,
+        ro17,
+        ro18,
+        ro19
+    ]
+    l_rn = [
+        rn1,
+        rn2,
+        rn3,
+        rn4,
+        rn5,
+        rn6,
+        rn7,
+        rn8,
+        rn9,
+        rn10,
+        rn11,
+        rn12,
+        rn13,
+        rn14,
+        rn15,
+        rn16
+    ]
+    l_rm = [
+        rm1,
+        rm2,
+        rm3,
+        rm4,
+        rm5,
+        rm6,
+        rm7,
+        rm8,
+        rm9,
+        rm10,
+        rm11,
+        rm12,
+        rm13,
+        rm14,
+        rm15,
+        rm16,
+        rm17,
+        rm18,
+        rm19,
+        rm20,
+        rm21,
+        rm22,
+        rm23,
+        rm24,
+        rm25,
+        rm26,
+        rm27,
+        rm28
+    ]
+    l_m = [
+         rm1,
+        rm2,
+        rm3,
+        rm4,
+        rm5,
+        rm6,
+        rm7,
+        rm8,
+        rm9,
+        rm10,
+        rm11,
+        rm12,
+        rm13,
+        rm14,
+        rm15,
+        rm16,
+        rm17,
+        rm18,
+        rm19,
+        rm20,
+        rm21,
+        rm22,
+        rm23,
+        rm24,
+        rm25,
+        rm26,
+        rm27,
+        rm28]
     
     spriteraton=pygame.sprite.Sprite()#sprite del ratón
     spriteraton.image=raton
     spriteraton.rect=raton.get_rect()
-    spriteraton.rect.top=50
-    spriteraton.rect.left=50
+    spriteraton.rect.top=70
+    spriteraton.rect.left=70
+    spriteraton.oldx = 0
+    spriteraton.oldy = 0
     arriba,abajo,izq,der=False, False, False, False
     salir=False
     reloj1=pygame.time.Clock()
@@ -283,100 +392,49 @@ def ventanap():#ventana principal
             if event.type==pygame.QUIT:
                 salir=True
             if event.type==pygame.KEYDOWN:#movimiento del raton con las teclas
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
                 if event.key==pygame.K_LEFT:
-                    vx-=10
+                    vx=-10
+                    vy=0
                 if event.key==pygame.K_RIGHT:
-                    vx+=10
+                    vx=10
+                    vy=0
                 if event.key==pygame.K_DOWN:
-                    vy+=10
+                    vy=10
+                    vx=0
                 if event.key==pygame.K_UP:
-                    vy-=10
+                    vy=-10
+                    vx=0
             
-                    
-        x+=vx#velocidad en x
-        if x<-1 or x>830:
-            x-=vx
-        y+=vy#velocidad en y
-        if y<0 or y>530:
-            y-=vy
-
-            oldx=spriteraton.rect.left
-            oldy=spriteraton.rect.top
+        spriteraton.oldx,spriteraton.oldy=spriteraton.rect.left,spriteraton.rect.top          
+        spriteraton.rect.move_ip(vx,vy)
+        colision(spriteraton,l_rn+l_ro+l_m)
             
         
         reloj1.tick(20)#definir a 2o fps
         pantalla.blit(fondo, (0, 0))
+
+        #Mostrar en la pantalla ladrillos
+        imprimir(pantalla,m1,l_m)
+        imprimir(pantalla,n1,l_rn)
+        imprimir(pantalla,o1,l_ro)
 #--------------------------------
 # impresion de obstaculos
 #--------------------------------
-        pantalla.blit(m1,rectangulom1)
-        pantalla.blit(m2,rm2)
-        pantalla.blit(m3,rm3)
-        pantalla.blit(m4,rm4)
-        pantalla.blit(m5,rm5)
-        pantalla.blit(m6,rm6)
-        pantalla.blit(m7,rm7)
-        pantalla.blit(m8,rm8)
-        pantalla.blit(m9,rm9)
-        pantalla.blit(m10,rm10)
-        pantalla.blit(m11,rm11)
-        pantalla.blit(m12,rm12)
-        pantalla.blit(m13,rm13)
-        pantalla.blit(m14,rm14)
-        pantalla.blit(m15,rm15)
-        pantalla.blit(m16,rm16)
-        pantalla.blit(m17,rm17)
-        pantalla.blit(m18,rm18)
-        pantalla.blit(m19,rm19)
-        pantalla.blit(m20,rm20)
-        pantalla.blit(m21,rm21)
-        pantalla.blit(m22,rm22)
-        pantalla.blit(m23,rm23)
-        pantalla.blit(m24,rm24)
-        pantalla.blit(m25,rm25)
-        pantalla.blit(m26,rm26)
-        pantalla.blit(m27,rm27)
-        pantalla.blit(m28,rm28)
-        pantalla.blit(n1,rn1)
-        pantalla.blit(n2,rn2)
-        pantalla.blit(n3,rn3)
-        pantalla.blit(n4,rn4)
-        pantalla.blit(n5,rn5)
-        pantalla.blit(n6,rn6)
-        pantalla.blit(n7,rn7)
-        pantalla.blit(n8,rn8)
-        pantalla.blit(n9,rn9)
-        pantalla.blit(n10,rn10)
-        pantalla.blit(n11,rn11)
-        pantalla.blit(n12,rn12)
-        pantalla.blit(n13,rn13)
-        pantalla.blit(n14,rn14)
-        pantalla.blit(n15,rn15)
-        pantalla.blit(n16,rn16)
-        pantalla.blit(o1,ro1)
-        pantalla.blit(o2,ro2)
-        pantalla.blit(o3,ro3)
-        pantalla.blit(o4,ro4)
-        pantalla.blit(o5,ro5)
-        pantalla.blit(o6,ro6)
-        pantalla.blit(o7,ro7)
-        pantalla.blit(o9,ro9)
-        pantalla.blit(o10,ro10)
-        pantalla.blit(o11,ro11)
-        pantalla.blit(o12,ro12)
-        pantalla.blit(o13,ro13)
-        pantalla.blit(o14,ro14)
-        pantalla.blit(o15,ro15)
-        pantalla.blit(o16,ro16)
-        pantalla.blit(o17,ro17)
-        pantalla.blit(o18,ro18)
-        pantalla.blit(o19,ro19)
-        pantalla.blit(spriteraton.image, (x,y))
+        
+        pantalla.blit(spriteraton.image, spriteraton.rect)
         pantalla.blit(info, (5,5))
         segundos=pygame.time.get_ticks()/1000
-        segundos=str(segundos)
-        contador=fuente1.render(segundos,0,(255,255,255))#contador para la pantalla
+        while segundos<11:
+            segundos=str(segundos)
+            contador=fuente1.render(segundos,0,(255,255,255))#contador para la pantalla
+            pantalla.blit(contador,(100,5))
+        if segundos ==11:
+            contador=fuente1.render("time over",0,(255,255,255))
         pantalla.blit(contador,(100,5))
+        
         pygame.display.flip()
         pygame.display.update()
     pygame.quit()
