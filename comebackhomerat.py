@@ -10,14 +10,6 @@ def imprimir(superficie,imagen,lista):
 def colision(sprite,listarec):
     if sprite.rect.collidelist(listarec)>(-1):
         sprite.rect.left,sprite.rect.top=sprite.oldx,sprite.oldy
-def colisionq(sprite,rectangulo,pantalla, imagen1, imagen2):
-    if sprite.rect.colliderect(rectangulo):
-        imagen1 = imagen2 
-    rectangulo = imagen1.get_rect()
-    rectangulo.left = 700
-    rectangulo.top = 50
-    pantalla.blit(imagen1,rectangulo)
-    
      
 def ventanap():#ventana principal
     SCREEN_WIDTH=923
@@ -37,6 +29,7 @@ def ventanap():#ventana principal
     puntajeq1,puntajeq2,puntajeq3,puntajeq4,puntajeq5=500,500,500,500,500
     queso=pygame.image.load("queso.png")
     Q = pygame.image.load("quesocomido.png")
+    ratonmalo=pygame.image.load("ratonmalo.png")
 #---------------------
 # situar las barreras del laberinto
 #---------------------
@@ -291,13 +284,13 @@ def ventanap():#ventana principal
     queso1=pygame.image.load("queso.png")
     q1=queso1
     rq1=q1.get_rect()
-    rq1.left = 700
+    rq1.left = 820
     rq1.top = 50
     queso2=pygame.image.load("queso.png")
     q2=queso2
     rq2=q2.get_rect()
     rq2.left=650
-    rq2.top=450
+    rq2.top=300
     queso3=pygame.image.load("queso.png")
     q3=queso3
     rq3=q3.get_rect()
@@ -313,6 +306,22 @@ def ventanap():#ventana principal
     rq5=q5.get_rect()
     rq5.left=428
     rq5.top=505
+    e1=pygame.image.load("ratonmalo.png")
+    re1=e1.get_rect()
+    re1.left=360
+    re1.top=50
+    e2=pygame.image.load("ratonmalo.png")
+    re2=e2.get_rect()
+    re2.left=643
+    re2.top=50
+    e3=pygame.image.load("ratonmalo.png")
+    re3=e3.get_rect()
+    re3.left=50
+    re3.top=510
+    e4=pygame.image.load("ratonmalo.png")
+    re4=e4.get_rect()
+    re4.left=820
+    re4.top=510
     l_ro = [
         ro1,
         ro2,
@@ -472,7 +481,7 @@ def ventanap():#ventana principal
             puntaje=puntaje+puntajeq1
             puntajeq1=0
         rq1 = queso1.get_rect()
-        rq1.left = 700
+        rq1.left = 820
         rq1.top = 50
         pantalla.blit(queso1,rq1)
     
@@ -482,7 +491,7 @@ def ventanap():#ventana principal
             puntajeq2=0
         rq2 = queso2.get_rect()
         rq2.left = 650
-        rq2.top = 450
+        rq2.top = 300
         pantalla.blit(queso2,rq2)
         
         if spriteraton.rect.colliderect(rq3):
@@ -511,9 +520,11 @@ def ventanap():#ventana principal
         rq5.left = 428
         rq5.top = 505
         pantalla.blit(queso5,rq5)
-        
 
-        
+        pantalla.blit(e1,re1)
+        pantalla.blit(e2,re2)
+        pantalla.blit(e3,re3)
+        pantalla.blit(e4,re4)
         pantalla.blit(spriteraton.image, spriteraton.rect)
         pantalla.blit(info, (5,5))
         pantalla.blit(info2, (350,5))
