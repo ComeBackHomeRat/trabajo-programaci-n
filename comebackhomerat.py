@@ -6,11 +6,19 @@ from pygame.locals import*
 def imprimir(superficie,imagen,lista):
     for e in lista:
             superficie.blit(imagen,e)
-
+    
 def colision(sprite,listarec):
     if sprite.rect.collidelist(listarec)>(-1):
         sprite.rect.left,sprite.rect.top=sprite.oldx,sprite.oldy
-
+def colisionq(sprite,rectangulo,pantalla, imagen1, imagen2):
+    if sprite.rect.colliderect(rectangulo):
+        imagen1 = imagen2 
+    rectangulo = imagen1.get_rect()
+    rectangulo.left = 700
+    rectangulo.top = 50
+    pantalla.blit(imagen1,rectangulo)
+    
+     
 def ventanap():#ventana principal
     SCREEN_WIDTH=923
     SCREEN_HEIGHT=600
@@ -18,14 +26,17 @@ def ventanap():#ventana principal
     pantalla=pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
     fuente1=pygame.font.SysFont("Arial", 20, True, False)#código de escritura
     info=fuente1.render("Time", 0, (255,255,255))
+    info2=fuente1.render("Score", 0, (255,255,255))
     pygame.display.set_caption("Come back home rat")#nombre de pantalla
     raton = pygame.image.load("ratonf.png").convert_alpha()#imágen ratón
     fondo=pygame.image.load("fondohojas.jpg").convert()#fondo
     vx,vy=0,0
     y=50
     x=50
-
-
+    puntaje=0
+    puntajeq1,puntajeq2,puntajeq3,puntajeq4,puntajeq5=500,500,500,500,500
+    queso=pygame.image.load("queso.png")
+    Q = pygame.image.load("quesocomido.png")
 #---------------------
 # situar las barreras del laberinto
 #---------------------
@@ -277,6 +288,31 @@ def ventanap():#ventana principal
     rn16=n16.get_rect()
     rn16.left=877
     rn16.top=543
+    queso1=pygame.image.load("queso.png")
+    q1=queso1
+    rq1=q1.get_rect()
+    rq1.left = 700
+    rq1.top = 50
+    queso2=pygame.image.load("queso.png")
+    q2=queso2
+    rq2=q2.get_rect()
+    rq2.left=650
+    rq2.top=450
+    queso3=pygame.image.load("queso.png")
+    q3=queso3
+    rq3=q3.get_rect()
+    rq3.left=50
+    rq3.top=450
+    queso4=pygame.image.load("queso.png")
+    q4=queso4
+    rq4=q4.get_rect()
+    rq4.left=215
+    rq4.top=235
+    queso5=pygame.image.load("queso.png")
+    q5=queso5
+    rq5=q5.get_rect()
+    rq5.left=428
+    rq5.top=505
     l_ro = [
         ro1,
         ro2,
@@ -387,6 +423,13 @@ def ventanap():#ventana principal
     reloj1=pygame.time.Clock()
     blanco=(255, 255, 255)
 
+
+    pantalla.blit(fondo, (0, 0))
+    imprimir(pantalla,m1,l_m)
+    imprimir(pantalla,n1,l_rn)
+    imprimir(pantalla,o1,l_ro)
+    pantalla.blit(queso,rq1)
+    
     while salir!= True:
         for event in pygame.event.get():#quitar la pantalla 
             if event.type==pygame.QUIT:
@@ -420,18 +463,69 @@ def ventanap():#ventana principal
         imprimir(pantalla,m1,l_m)
         imprimir(pantalla,n1,l_rn)
         imprimir(pantalla,o1,l_ro)
-#--------------------------------
-# impresion de obstaculos
-#--------------------------------
+        
+        
+        #colisionq(spriteraton,rq1,pantalla,queso,Q)
+
+        if spriteraton.rect.colliderect(rq1):
+            queso1 = Q
+            puntaje=puntaje+puntajeq1
+            puntajeq1=0
+        rq1 = queso1.get_rect()
+        rq1.left = 700
+        rq1.top = 50
+        pantalla.blit(queso1,rq1)
+    
+        if spriteraton.rect.colliderect(rq2):
+            queso2 = Q
+            puntaje=puntaje+puntajeq2
+            puntajeq2=0
+        rq2 = queso2.get_rect()
+        rq2.left = 650
+        rq2.top = 450
+        pantalla.blit(queso2,rq2)
+        
+        if spriteraton.rect.colliderect(rq3):
+            queso3 = Q
+            puntaje=puntaje+puntajeq3
+            puntajeq3=0
+        rq3 = queso3.get_rect()
+        rq3.left = 50
+        rq3.top = 450
+        pantalla.blit(queso3,rq3)
+        
+        if spriteraton.rect.colliderect(rq4):
+            queso4 = Q
+            puntaje=puntaje+puntajeq4
+            puntajeq4=0
+        rq4 = queso4.get_rect()
+        rq4.left = 215
+        rq4.top = 235
+        pantalla.blit(queso4,rq4)
+        
+        if spriteraton.rect.colliderect(rq5):
+            queso5 = Q
+            puntaje=puntaje+puntajeq5
+            puntajeq5=0
+        rq5 = queso5.get_rect()
+        rq5.left = 428
+        rq5.top = 505
+        pantalla.blit(queso5,rq5)
+        
+
         
         pantalla.blit(spriteraton.image, spriteraton.rect)
         pantalla.blit(info, (5,5))
+        pantalla.blit(info2, (350,5))
+        fuente1=pygame.font.SysFont("Arial", 20, True, False)#código de escritura
+        infopuntaje=fuente1.render(str(puntaje), 0, (255,255,255))
+        pantalla.blit(infopuntaje, (410,5))
         segundos=pygame.time.get_ticks()/1000
-        while segundos<11:
+        while segundos<121:
             segundos=str(segundos)
             contador=fuente1.render(segundos,0,(255,255,255))#contador para la pantalla
             pantalla.blit(contador,(100,5))
-        if segundos ==11:
+        if segundos ==121:
             contador=fuente1.render("time over",0,(255,255,255))
         pantalla.blit(contador,(100,5))
         
