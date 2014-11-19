@@ -3,6 +3,7 @@ import random
 import sys
 from pygame.locals import*
 
+
 def imprimir(superficie,imagen,lista):
     for e in lista:
             superficie.blit(imagen,e)
@@ -16,9 +17,13 @@ def ventanap():#ventana principal
     SCREEN_HEIGHT=600
     pygame.init()
     pantalla=pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
-    fuente1=pygame.font.SysFont("Arial", 20, True, False)#código de escritura
+    fuente1=pygame.font.SysFont("Arial", 20, True, False)
+    fuente4=pygame.font.SysFont("Arial", 70, True, False)#código de escritura
+    Mensaje_final = fuente1.render("Perdiste",0,(255,255,255))
     info=fuente1.render("Time", 0, (255,255,255))
     info2=fuente1.render("Score", 0, (255,255,255))
+    info3=fuente1.render("Lives",0,(255,255,255))
+    info4=fuente4.render("You Lose :(",0,(255,255,255))
     pygame.display.set_caption("Come back home rat")#nombre de pantalla
     raton = pygame.image.load("ratonf.png").convert_alpha()#imágen ratón
     fondo=pygame.image.load("fondohojas.jpg").convert()#fondo
@@ -26,10 +31,29 @@ def ventanap():#ventana principal
     y=50
     x=50
     puntaje=0
+    vida=3
     puntajeq1,puntajeq2,puntajeq3,puntajeq4,puntajeq5=500,500,500,500,500
     queso=pygame.image.load("queso.png")
     Q = pygame.image.load("quesocomido.png")
     ratonmalo=pygame.image.load("ratonmalo.png")
+    vidas=pygame.image.load("vidas.png")
+    play=pygame.image.load("play.png")
+    playr=play.get_rect()
+    playr.top=310
+    playr.left=100
+    guide=pygame.image.load("guide.png")
+    guider=guide.get_rect()
+    guider.left=280
+    guider.top=290
+    quitt=pygame.image.load("quit.png")
+    quitr=quitt.get_rect()
+    quitr.left=480
+    quitr.top=270
+
+    #Imagen de inicio e instrucciones
+    inicio = pygame.image.load("COME.png").convert()
+    guidei=pygame.image.load("instrucciones.png")
+    
 #---------------------
 # situar las barreras del laberinto
 #---------------------
@@ -281,6 +305,7 @@ def ventanap():#ventana principal
     rn16=n16.get_rect()
     rn16.left=877
     rn16.top=543
+    #Crear los quesos 
     queso1=pygame.image.load("queso.png")
     q1=queso1
     rq1=q1.get_rect()
@@ -306,10 +331,13 @@ def ventanap():#ventana principal
     rq5=q5.get_rect()
     rq5.left=428
     rq5.top=505
+    #Crear a los enemigos
     e1=pygame.image.load("ratonmalo.png")
     re1=e1.get_rect()
     re1.left=360
     re1.top=50
+    re1vx=0
+    re1vy=0
     e2=pygame.image.load("ratonmalo.png")
     re2=e2.get_rect()
     re2.left=643
@@ -322,6 +350,9 @@ def ventanap():#ventana principal
     re4=e4.get_rect()
     re4.left=820
     re4.top=510
+    #Lista de los rectangulos de los ratones malos :)
+    l_ratonesm=[re1,re2,re3,re4]
+    #Listas de los rectangulos
     l_ro = [
         ro1,
         ro2,
@@ -432,115 +463,157 @@ def ventanap():#ventana principal
     reloj1=pygame.time.Clock()
     blanco=(255, 255, 255)
 
+    #Variable para verificar si el jugador perdio
+    perdio = False
 
-    pantalla.blit(fondo, (0, 0))
-    imprimir(pantalla,m1,l_m)
-    imprimir(pantalla,n1,l_rn)
-    imprimir(pantalla,o1,l_ro)
-    pantalla.blit(queso,rq1)
+    #Variable para iniciar el juego cuando el jugador presiona enter
+    inicio_juego = False
     
-    while salir!= True:
+    while True:
+        if pygame.mouse.get_pressed()[0]:
+            mouse_b = pygame.mouse.get_pos()
+            mouse_r = pygame.Rect(mouse_b,(3,3))
+            if mouse_r.colliderect(playr):
+                inicio_juego = True
+            if mouse_r.colliderect(quitr):
+                pygame.quit()
+                sys.exit()
+            if mouse_r.colliderect(guider):
+                print "c"
+                pantalla.blit(guidei, (0,0))
+                
         for event in pygame.event.get():#quitar la pantalla 
             if event.type==pygame.QUIT:
-                salir=True
+                pygame.quit()
+                sys.exit()
             if event.type==pygame.KEYDOWN:#movimiento del raton con las teclas
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
-                if event.key==pygame.K_LEFT:
-                    vx=-10
-                    vy=0
-                if event.key==pygame.K_RIGHT:
-                    vx=10
-                    vy=0
-                if event.key==pygame.K_DOWN:
-                    vy=10
-                    vx=0
-                if event.key==pygame.K_UP:
-                    vy=-10
-                    vx=0
+                    
+                
+                #Mueve el ratoncito solamente si no ha perdido
+                if not(perdio) and inicio_juego:
+                    if event.key==pygame.K_LEFT:
+                        vx=-10
+                        vy=0
+                    if event.key==pygame.K_RIGHT:
+                        vx=10
+                        vy=0
+                    if event.key==pygame.K_DOWN:
+                        vy=10
+                        vx=0
+                    if event.key==pygame.K_UP:
+                        vy=-10
+                        vx=0
+        if inicio_juego:
+            spriteraton.oldx,spriteraton.oldy=spriteraton.rect.left,spriteraton.rect.top          
+            spriteraton.rect.move_ip(vx,vy)
+            colision(spriteraton,l_rn+l_ro+l_m)
+                
             
-        spriteraton.oldx,spriteraton.oldy=spriteraton.rect.left,spriteraton.rect.top          
-        spriteraton.rect.move_ip(vx,vy)
-        colision(spriteraton,l_rn+l_ro+l_m)
+            reloj1.tick(20)#definir a 2o fps
+            pantalla.blit(fondo, (0, 0))
+
+            #Mostrar en la pantalla ladrillos
+            imprimir(pantalla,m1,l_m)
+            imprimir(pantalla,n1,l_rn)
+            imprimir(pantalla,o1,l_ro)
             
+            
+            #Colision dle raton con los quesos
+            if spriteraton.rect.colliderect(rq1):
+                queso1 = Q
+                puntaje=puntaje+puntajeq1
+                puntajeq1=0
+            rq1 = queso1.get_rect()
+            rq1.left = 820
+            rq1.top = 50
+            pantalla.blit(queso1,rq1)
         
-        reloj1.tick(20)#definir a 2o fps
-        pantalla.blit(fondo, (0, 0))
+            if spriteraton.rect.colliderect(rq2):
+                queso2 = Q
+                puntaje=puntaje+puntajeq2
+                puntajeq2=0
+            rq2 = queso2.get_rect()
+            rq2.left = 650
+            rq2.top = 300
+            pantalla.blit(queso2,rq2)
+            
+            if spriteraton.rect.colliderect(rq3):
+                queso3 = Q
+                puntaje=puntaje+puntajeq3
+                puntajeq3=0
+            rq3 = queso3.get_rect()
+            rq3.left = 50
+            rq3.top = 450
+            pantalla.blit(queso3,rq3)
+            
+            if spriteraton.rect.colliderect(rq4):
+                queso4 = Q
+                puntaje=puntaje+puntajeq4
+                puntajeq4=0
+            rq4 = queso4.get_rect()
+            rq4.left = 215
+            rq4.top = 235
+            pantalla.blit(queso4,rq4)
+            
+            if spriteraton.rect.colliderect(rq5):
+                queso5 = Q
+                puntaje=puntaje+puntajeq5
+                puntajeq5=0
+            rq5 = queso5.get_rect()
+            rq5.left = 428
+            rq5.top = 505
+            pantalla.blit(queso5,rq5)
 
-        #Mostrar en la pantalla ladrillos
-        imprimir(pantalla,m1,l_m)
-        imprimir(pantalla,n1,l_rn)
-        imprimir(pantalla,o1,l_ro)
-        
-        
-        #colisionq(spriteraton,rq1,pantalla,queso,Q)
+            for rec_ratonmalo in l_ratonesm:
+                if spriteraton.rect.colliderect(rec_ratonmalo):
+                    spriteraton.rect.move_ip(-vx,-vy)
+                    vida-=1
+                    spriteraton.rect.top=70
+                    spriteraton.rect.left=70
+            if vida==0:
+                perdio=True
+                pantalla.blit(info4,(300,250))
+                
 
-        if spriteraton.rect.colliderect(rq1):
-            queso1 = Q
-            puntaje=puntaje+puntajeq1
-            puntajeq1=0
-        rq1 = queso1.get_rect()
-        rq1.left = 820
-        rq1.top = 50
-        pantalla.blit(queso1,rq1)
-    
-        if spriteraton.rect.colliderect(rq2):
-            queso2 = Q
-            puntaje=puntaje+puntajeq2
-            puntajeq2=0
-        rq2 = queso2.get_rect()
-        rq2.left = 650
-        rq2.top = 300
-        pantalla.blit(queso2,rq2)
-        
-        if spriteraton.rect.colliderect(rq3):
-            queso3 = Q
-            puntaje=puntaje+puntajeq3
-            puntajeq3=0
-        rq3 = queso3.get_rect()
-        rq3.left = 50
-        rq3.top = 450
-        pantalla.blit(queso3,rq3)
-        
-        if spriteraton.rect.colliderect(rq4):
-            queso4 = Q
-            puntaje=puntaje+puntajeq4
-            puntajeq4=0
-        rq4 = queso4.get_rect()
-        rq4.left = 215
-        rq4.top = 235
-        pantalla.blit(queso4,rq4)
-        
-        if spriteraton.rect.colliderect(rq5):
-            queso5 = Q
-            puntaje=puntaje+puntajeq5
-            puntajeq5=0
-        rq5 = queso5.get_rect()
-        rq5.left = 428
-        rq5.top = 505
-        pantalla.blit(queso5,rq5)
-
-        pantalla.blit(e1,re1)
-        pantalla.blit(e2,re2)
-        pantalla.blit(e3,re3)
-        pantalla.blit(e4,re4)
-        pantalla.blit(spriteraton.image, spriteraton.rect)
-        pantalla.blit(info, (5,5))
-        pantalla.blit(info2, (350,5))
-        fuente1=pygame.font.SysFont("Arial", 20, True, False)#código de escritura
-        infopuntaje=fuente1.render(str(puntaje), 0, (255,255,255))
-        pantalla.blit(infopuntaje, (410,5))
-        segundos=pygame.time.get_ticks()/1000
-        while segundos<121:
-            segundos=str(segundos)
-            contador=fuente1.render(segundos,0,(255,255,255))#contador para la pantalla
+            #mostrar en pantalla a los enemigos
+            pantalla.blit(e1,re1)
+            pantalla.blit(e2,re2)
+            pantalla.blit(e3,re3)
+            pantalla.blit(e4,re4)
+            #mostrar en pantalla al jugador (raton)
+            pantalla.blit(spriteraton.image, spriteraton.rect)
+            #mostrar en pantalla el contador del reloj
+            pantalla.blit(info, (5,5))
+            pantalla.blit(info2, (350,5))
+            pantalla.blit(info3, (650,5))
+            pantalla.blit(vidas, (700,5))
+            fuente1=pygame.font.SysFont("Arial", 20, True, False)#código de escritura
+            infopuntaje=fuente1.render(str(puntaje), 0, (255,255,255))
+            infovida=fuente1.render(str(vida), 0, (255,255,255))
+            pantalla.blit(infopuntaje, (410,5))
+            pantalla.blit(infovida, (750,5))
+            segundos=pygame.time.get_ticks()/1000
+            while segundos<111 and not(perdio):
+                segundos=str(segundos)
+                contador=fuente1.render(segundos,0,(255,255,255))#contador para la pantalla
+                pantalla.blit(contador,(100,5))
+            if segundos ==11 or perdio:
+                vx,vy=0,0
+                if perdio:
+                    t_contador = "Game Over"
+                else:
+                    t_contador = "Time Over"
+                contador=fuente1.render(t_contador,0,(255,255,255))
+                
             pantalla.blit(contador,(100,5))
-        if segundos ==121:
-            contador=fuente1.render("time over",0,(255,255,255))
-        pantalla.blit(contador,(100,5))
-        
-        pygame.display.flip()
+        else:
+            pantalla.blit(inicio, (0,0))
+            pantalla.blit(play, playr)
+            pantalla.blit(guide, guider)
+            pantalla.blit(quitt, quitr)
         pygame.display.update()
     pygame.quit()
 
