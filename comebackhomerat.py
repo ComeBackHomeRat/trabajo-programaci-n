@@ -52,7 +52,7 @@ def ventanap():#ventana principal
 
     #Imagen de inicio e instrucciones
     inicio = pygame.image.load("COME.png").convert()
-    guidei=pygame.image.load("instrucciones.png")
+    guidei=pygame.image.load("instrucciones.png").convert()
     
 #---------------------
 # situar las barreras del laberinto
@@ -350,7 +350,7 @@ def ventanap():#ventana principal
     re4=e4.get_rect()
     re4.left=820
     re4.top=510
-    #Lista de los rectangulos de los ratones malos :)
+    #Lista de los rectangulos de los ratones malos 
     l_ratonesm=[re1,re2,re3,re4]
     #Listas de los rectangulos
     l_ro = [
@@ -566,6 +566,9 @@ def ventanap():#ventana principal
             rq5.left = 428
             rq5.top = 505
             pantalla.blit(queso5,rq5)
+
+           # if puntaje==2500:
+                
 
             for rec_ratonmalo in l_ratonesm:
                 if spriteraton.rect.colliderect(rec_ratonmalo):
