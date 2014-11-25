@@ -11,7 +11,26 @@ def imprimir(superficie,imagen,lista):
 def colision(sprite,listarec):
     if sprite.rect.collidelist(listarec)>(-1):
         sprite.rect.left,sprite.rect.top=sprite.oldx,sprite.oldy
-     
+def plantahorizontal(imagen,superficie,y,lista):
+    x=0
+    while x<831:
+        rect = imagen.get_rect()
+        rect.top = y
+        rect.left = x
+        lista.append(rect)
+        superficie.blit(imagen, rect)
+        x+=46
+    return lista
+def plantavertical(imagen,superficie,x,lista):
+    y=0
+    while y<=600:
+        rect=imagen.get_rect()
+        rect.top=y
+        rect.left=x
+        lista.append(rect)
+        superficie.blit(imagen, rect)
+        y+=52
+        
 def ventanap():#ventana principal
     SCREEN_WIDTH=923
     SCREEN_HEIGHT=600
@@ -26,11 +45,12 @@ def ventanap():#ventana principal
     info4=fuente4.render("You Lose :(",0,(255,255,255))
     pygame.display.set_caption("Come back home rat")#nombre de pantalla
     raton = pygame.image.load("ratonf.png").convert_alpha()#imágen ratón
-    fondo=pygame.image.load("fondohojas.jpg").convert()#fondo
+    fondo=pygame.image.load("fondohojas.jpg").convert()#fondo nivel 1
+    fondo2=pygame.image.load("arena.png").convert() #fondo nivel 2
     vx,vy=0,0
     y=50
     x=50
-    puntaje=0
+    puntaje1,puntaje2,puntaje3=0,0,0
     vida=3
     puntajeq1,puntajeq2,puntajeq3,puntajeq4,puntajeq5=500,500,500,500,500
     queso=pygame.image.load("queso.png")
@@ -524,7 +544,7 @@ def ventanap():#ventana principal
             #Colision dle raton con los quesos
             if spriteraton.rect.colliderect(rq1):
                 queso1 = Q
-                puntaje=puntaje+puntajeq1
+                puntaje1=puntaje1+puntajeq1
                 puntajeq1=0
             rq1 = queso1.get_rect()
             rq1.left = 820
@@ -533,7 +553,7 @@ def ventanap():#ventana principal
         
             if spriteraton.rect.colliderect(rq2):
                 queso2 = Q
-                puntaje=puntaje+puntajeq2
+                puntaje1=puntaje1+puntajeq2
                 puntajeq2=0
             rq2 = queso2.get_rect()
             rq2.left = 650
@@ -542,7 +562,7 @@ def ventanap():#ventana principal
             
             if spriteraton.rect.colliderect(rq3):
                 queso3 = Q
-                puntaje=puntaje+puntajeq3
+                puntaje1=puntaje1+puntajeq3
                 puntajeq3=0
             rq3 = queso3.get_rect()
             rq3.left = 50
@@ -551,7 +571,7 @@ def ventanap():#ventana principal
             
             if spriteraton.rect.colliderect(rq4):
                 queso4 = Q
-                puntaje=puntaje+puntajeq4
+                puntaje1=puntaje1+puntajeq4
                 puntajeq4=0
             rq4 = queso4.get_rect()
             rq4.left = 215
@@ -560,14 +580,12 @@ def ventanap():#ventana principal
             
             if spriteraton.rect.colliderect(rq5):
                 queso5 = Q
-                puntaje=puntaje+puntajeq5
+                puntaje1=puntaje1+puntajeq5
                 puntajeq5=0
             rq5 = queso5.get_rect()
             rq5.left = 428
             rq5.top = 505
             pantalla.blit(queso5,rq5)
-
-           # if puntaje==2500:
                 
 
             for rec_ratonmalo in l_ratonesm:
@@ -580,7 +598,7 @@ def ventanap():#ventana principal
                 perdio=True
                 pantalla.blit(info4,(300,250))
                 
-
+    
             #mostrar en pantalla a los enemigos
             pantalla.blit(e1,re1)
             pantalla.blit(e2,re2)
@@ -594,16 +612,16 @@ def ventanap():#ventana principal
             pantalla.blit(info3, (650,5))
             pantalla.blit(vidas, (700,5))
             fuente1=pygame.font.SysFont("Arial", 20, True, False)#código de escritura
-            infopuntaje=fuente1.render(str(puntaje), 0, (255,255,255))
+            infopuntaje=fuente1.render(str(puntaje1), 0, (255,255,255))
             infovida=fuente1.render(str(vida), 0, (255,255,255))
             pantalla.blit(infopuntaje, (410,5))
             pantalla.blit(infovida, (750,5))
-            segundos=pygame.time.get_ticks()/1000
-            while segundos<111 and not(perdio):
+            segundos=pygame.time.get_ticks()/1000-segundosInit
+            while segundos<61 and not(perdio):
                 segundos=str(segundos)
                 contador=fuente1.render(segundos,0,(255,255,255))#contador para la pantalla
                 pantalla.blit(contador,(100,5))
-            if segundos ==11 or perdio:
+            if segundos ==60 or perdio:
                 vx,vy=0,0
                 if perdio:
                     t_contador = "Game Over"
@@ -612,7 +630,38 @@ def ventanap():#ventana principal
                 contador=fuente1.render(t_contador,0,(255,255,255))
                 
             pantalla.blit(contador,(100,5))
+
+        #cambio de nivel (nivel2)
+            if puntaje1==2500:
+                pantalla.blit(fondo2, (0,0))
+                planta=pygame.image.load("planta.png")
+                l_plantas=[]
+                plantahorizontal(planta,pantalla,0,l_plantas)
+                plantahorizontal(planta,pantalla,548,l_plantas)
+                plantavertical(planta,pantalla,0,l_plantas)
+                plantavertical(planta,pantalla,877,l_plantas)
+                colision(spriteraton,l_plantas)
+                pantalla.blit(spriteraton.image, spriteraton.rect)
+                l_ratonesm=[]
+                segundosn2=pygame.time.get_ticks()/1000-(int(segundos)+segundosInit)
+                pantalla.blit(contador, (100,5))
+
+                while segundos<61 and not(perdio):
+                    segundos=str(segundos)
+                    contador=fuente1.render(segundos,0,(255,255,255))#contador para la pantalla
+                    pantalla.blit(contador,(100,5))
+                if segundos ==60 or perdio:
+                    vx,vy=0,0
+                    if perdio:
+                        t_contador = "Game Over"
+                    else:
+                        t_contador = "Time Over"
+
+                
+                
+                
         else:
+            segundosInit=pygame.time.get_ticks()/1000
             pantalla.blit(inicio, (0,0))
             pantalla.blit(play, playr)
             pantalla.blit(guide, guider)
