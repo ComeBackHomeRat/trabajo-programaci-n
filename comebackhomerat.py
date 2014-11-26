@@ -36,7 +36,12 @@ def generarrect(imagen,superficie,x,y,lista):
     rect.left=x
     lista.append(rect)
     superficie.blit(imagen,rect)
-        
+def quesos(imagen,superficie,x,y,nombre):
+    nombre=imagen.get_rect()
+    nombre.top=y
+    nombre.left=x
+    superficie.blit(imagen,nombre)
+    return nombre
 def ventanap():#ventana principal
     SCREEN_WIDTH=923
     SCREEN_HEIGHT=600
@@ -550,7 +555,7 @@ def ventanap():#ventana principal
             #Colision dle raton con los quesos
             if spriteraton.rect.colliderect(rq1):
                 queso1 = Q
-                puntaje1=puntaje1+puntajeq1
+                puntaje2=puntaje2+puntajeq1
                 puntajeq1=0
             rq1 = queso1.get_rect()
             rq1.left = 820
@@ -559,7 +564,7 @@ def ventanap():#ventana principal
         
             if spriteraton.rect.colliderect(rq2):
                 queso2 = Q
-                puntaje1=puntaje1+puntajeq2
+                puntaje2=puntaje2+puntajeq2
                 puntajeq2=0
             rq2 = queso2.get_rect()
             rq2.left = 650
@@ -568,7 +573,7 @@ def ventanap():#ventana principal
             
             if spriteraton.rect.colliderect(rq3):
                 queso3 = Q
-                puntaje1=puntaje1+puntajeq3
+                puntaje2=puntaje2+puntajeq3
                 puntajeq3=0
             rq3 = queso3.get_rect()
             rq3.left = 50
@@ -577,7 +582,7 @@ def ventanap():#ventana principal
             
             if spriteraton.rect.colliderect(rq4):
                 queso4 = Q
-                puntaje1=puntaje1+puntajeq4
+                puntaje2=puntaje2+puntajeq4
                 puntajeq4=0
             rq4 = queso4.get_rect()
             rq4.left = 215
@@ -586,7 +591,7 @@ def ventanap():#ventana principal
             
             if spriteraton.rect.colliderect(rq5):
                 queso5 = Q
-                puntaje1=puntaje1+puntajeq5
+                puntaje2=puntaje2+puntajeq5
                 puntajeq5=0
             rq5 = queso5.get_rect()
             rq5.left = 428
@@ -618,7 +623,7 @@ def ventanap():#ventana principal
             pantalla.blit(info3, (650,5))
             pantalla.blit(vidas, (700,5))
             fuente1=pygame.font.SysFont("Arial", 20, True, False)#código de escritura
-            infopuntaje=fuente1.render(str(puntaje1), 0, (255,255,255))
+            infopuntaje=fuente1.render(str(puntaje2), 0, (255,255,255))
             infovida=fuente1.render(str(vida), 0, (255,255,255))
             pantalla.blit(infopuntaje, (410,5))
             pantalla.blit(infovida, (750,5))
@@ -637,8 +642,8 @@ def ventanap():#ventana principal
                 
             pantalla.blit(contador,(100,5))
 
-        #cambio de nivel (nivel2)
-            if puntaje1==2500:
+        #cambio de nivel (nivel 2)
+            if puntaje2==2500:
                 pantalla.blit(fondo2, (0,0))
                 planta=pygame.image.load("planta.png")
                 l_plantas=[]
@@ -661,6 +666,7 @@ def ventanap():#ventana principal
                 l_rn=[]
                 l_m=[]
                 vida=3
+                #paredes del laberinto nivel 2 
                 generarrect(planta,pantalla,90,104,l_plantas)
                 generarrect(planta,pantalla,90,156,l_plantas)
                 generarrect(planta,pantalla,90,208,l_plantas)
@@ -690,8 +696,110 @@ def ventanap():#ventana principal
                 generarrect(planta,pantalla,458,453,l_plantas)
                 generarrect(planta,pantalla,504,453,l_plantas)
                 generarrect(planta,pantalla,550,453,l_plantas)
+                generarrect(planta,pantalla,550,401,l_plantas)
+                generarrect(planta,pantalla,550,349,l_plantas)
+                generarrect(planta,pantalla,550,297,l_plantas)
+                generarrect(planta,pantalla,550,245,l_plantas)
+                generarrect(planta,pantalla,550,193,l_plantas)
+                generarrect(planta,pantalla,550,141,l_plantas)
+                generarrect(planta,pantalla,596,141,l_plantas)
+                generarrect(planta,pantalla,642,141,l_plantas)
+                generarrect(planta,pantalla,458,141,l_plantas)
+                generarrect(planta,pantalla,458,193,l_plantas)
+                generarrect(planta,pantalla,458,245,l_plantas)
+                generarrect(planta,pantalla,458,297,l_plantas)
+                generarrect(planta,pantalla,458,349,l_plantas)
+                generarrect(planta,pantalla,458,401,l_plantas)
+                generarrect(planta,pantalla,458,453,l_plantas)
+                generarrect(planta,pantalla,831,453,l_plantas)
+                generarrect(planta,pantalla,785,453,l_plantas)
+                generarrect(planta,pantalla,739,453,l_plantas)
+                generarrect(planta,pantalla,739,401,l_plantas)
+                generarrect(planta,pantalla,739,349,l_plantas)
+                generarrect(planta,pantalla,739,297,l_plantas)
+                generarrect(planta,pantalla,739,245,l_plantas)
+                generarrect(planta,pantalla,739,193,l_plantas)
+                generarrect(planta,pantalla,739,453,l_plantas)
+                generarrect(planta,pantalla,739,141,l_plantas)
+                #Colision del raton con los quesos
+                queso22=pygame.image.load("queso.png")
+                Q2 = pygame.image.load("quesocomido.png")
+                puntajeqq1,puntajeqq2,puntajeqq3,puntajeqq4,puntajeqq5=500,500,500,500,500
+                #Crear los quesos 
+                queso11=pygame.image.load("queso.png")
+                q11=queso11
+                rqq1=q11.get_rect()
+                rqq1.left = 820
+                rqq1.top = 50
+                queso22=pygame.image.load("queso.png")
+                q22=queso22
+                rqq2=q22.get_rect()
+                rqq2.left=650
+                rqq2.top=300
+                queso33=pygame.image.load("queso.png")
+                q33=queso33
+                rqq3=q33.get_rect()
+                rqq3.left=50
+                rqq3.top=450
+                queso44=pygame.image.load("queso.png")
+                q44=queso44
+                rqq4=q44.get_rect()
+                rqq4.left=215
+                rqq4.top=235
+                queso55=pygame.image.load("queso.png")
+                q55=queso55
+                rqq5=q55.get_rect()
+                rqq5.left=428
+                rqq5.top=505
+                
+                if spriteraton.rect.colliderect(rqq1):
+                    queso11 = Q2
+                    puntaje1=puntaje1+puntajeqq1
+                    puntajeqq1=0
+                rqq1 = queso1.get_rect()
+                rqq1.left = 820
+                rqq1.top = 50
+                pantalla.blit(queso11,rqq1)
+            
+                if spriteraton.rect.colliderect(rqq2):
+                    queso22 = Q2
+                    puntaje1=puntaje1+puntajeqq2
+                    puntajeqq2=0
+                rqq2 = queso22.get_rect()
+                rqq2.left = 650
+                rqq2.top = 300
+                pantalla.blit(queso22,rqq2)
+                
+                if spriteraton.rect.colliderect(rqq3):
+                    queso33 = Q2
+                    puntaje1=puntaje1+puntajeqq3
+                    puntajeqq3=0
+                rqq3 = queso33.get_rect()
+                rqq3.left = 50
+                rqq3.top = 450
+                pantalla.blit(queso33,rqq3)
+                
+                if spriteraton.rect.colliderect(rqq4):
+                    queso44 = Q2
+                    puntaje1=puntaje1+puntajeqq4
+                    puntajeqq4=0
+                rqq4 = queso44.get_rect()
+                rqq4.left = 215
+                rqq4.top = 235
+                pantalla.blit(queso44,rqq4)
+                
+                if spriteraton.rect.colliderect(rqq5):
+                    queso55 = Q2
+                    puntaje1=puntaje1+puntajeqq5
+                    puntajeqq5=0
+                rqq5 = queso55.get_rect()
+                rqq5.left = 428
+                rqq5.top = 505
+                pantalla.blit(queso55,rqq5)
                 
                 
+                
+                #colision de las plantas con el raton
                 colision(spriteraton,l_plantas)
                                 
 
@@ -699,7 +807,7 @@ def ventanap():#ventana principal
                     segundos=str(segundos)
                     contador=fuente1.render(segundos,0,(255,255,255))#contador para la pantalla
                     pantalla.blit(contador,(100,5))
-                if segundos ==60 or perdio:
+                if segundos ==61 or perdio:
                     vx,vy=0,0
                     if perdio:
                         t_contador = "Game Over"
