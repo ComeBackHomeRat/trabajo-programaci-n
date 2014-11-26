@@ -30,6 +30,12 @@ def plantavertical(imagen,superficie,x,lista):
         lista.append(rect)
         superficie.blit(imagen, rect)
         y+=52
+def generarrect(imagen,superficie,x,y,lista):
+    rect=imagen.get_rect()
+    rect.top=y
+    rect.left=x
+    lista.append(rect)
+    superficie.blit(imagen,rect)
         
 def ventanap():#ventana principal
     SCREEN_WIDTH=923
@@ -645,6 +651,49 @@ def ventanap():#ventana principal
                 l_ratonesm=[]
                 segundosn2=pygame.time.get_ticks()/1000-(int(segundos)+segundosInit)
                 pantalla.blit(contador, (100,5))
+                pantalla.blit(infopuntaje, (410,5))
+                pantalla.blit(infovida, (750,5))
+                pantalla.blit(info, (5,5))
+                pantalla.blit(info2, (350,5))
+                pantalla.blit(info3, (650,5))
+                pantalla.blit(vidas, (700,5))
+                l_ro=[]
+                l_rn=[]
+                l_m=[]
+                vida=3
+                generarrect(planta,pantalla,90,104,l_plantas)
+                generarrect(planta,pantalla,90,156,l_plantas)
+                generarrect(planta,pantalla,90,208,l_plantas)
+                generarrect(planta,pantalla,90,260,l_plantas)
+                generarrect(planta,pantalla,90,312,l_plantas)
+                generarrect(planta,pantalla,90,364,l_plantas)
+                generarrect(planta,pantalla,90,416,l_plantas)
+                generarrect(planta,pantalla,136,416,l_plantas)
+                generarrect(planta,pantalla,182,416,l_plantas)
+                generarrect(planta,pantalla,228,416,l_plantas)
+                generarrect(planta,pantalla,228,104,l_plantas)
+                generarrect(planta,pantalla,228,156,l_plantas)
+                generarrect(planta,pantalla,228,208,l_plantas)
+                generarrect(planta,pantalla,228,260,l_plantas)
+                generarrect(planta,pantalla,228,312,l_plantas)
+                generarrect(planta,pantalla,228,364,l_plantas)
+                generarrect(planta,pantalla,228,416,l_plantas)
+                generarrect(planta,pantalla,274,104,l_plantas)
+                generarrect(planta,pantalla,320,104,l_plantas)
+                generarrect(planta,pantalla,366,104,l_plantas)
+                generarrect(planta,pantalla,366,156,l_plantas)
+                generarrect(planta,pantalla,366,208,l_plantas)
+                generarrect(planta,pantalla,366,349,l_plantas)
+                generarrect(planta,pantalla,366,401,l_plantas)
+                generarrect(planta,pantalla,366,453,l_plantas)
+                generarrect(planta,pantalla,412,453,l_plantas)
+                generarrect(planta,pantalla,458,453,l_plantas)
+                generarrect(planta,pantalla,504,453,l_plantas)
+                generarrect(planta,pantalla,550,453,l_plantas)
+                
+                
+                colision(spriteraton,l_plantas)
+                                
 
                 while segundos<61 and not(perdio):
                     segundos=str(segundos)
