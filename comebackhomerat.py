@@ -3,6 +3,38 @@ import random
 import sys
 from pygame.locals import*
 
+def horizontal(imagen,superficie,x,y,z,lista):
+    x=x
+    while x<z:
+        rect = imagen.get_rect()
+        rect.top = y
+        rect.left = x
+        lista.append(rect)
+        superficie.blit(imagen, rect)
+        x+=44
+    return lista    
+def movimiento_raton(rect):
+    if rect.vertical:
+        if rect.rect.top <= rect.min:
+            rect.direccion = False
+        elif rect.rect.top >= rect.max:
+            rect.direccion = True
+
+        if rect.direccion:
+            rect.vy=-rect.velocidad
+        else:
+            rect.vy=rect.velocidad
+    else:
+        if rect.rect.left <= rect.min:
+            rect.direccion = False
+        elif rect.rect.left >= rect.max:
+            rect.direccion = True
+
+        if rect.direccion:
+            rect.vx=-rect.velocidad
+        else:
+            rect.vx=rect.velocidad
+    rect.rect.move_ip(rect.vx,rect.vy)
 
 def imprimir(superficie,imagen,lista):
     for e in lista:
@@ -21,15 +53,25 @@ def plantahorizontal(imagen,superficie,y,lista):
         superficie.blit(imagen, rect)
         x+=46
     return lista
-def plantavertical(imagen,superficie,x,lista):
+def estrellahorizontal(imagen,superficie,y,z,lista):
+    x=0
+    while x<z:
+        rect = imagen.get_rect()
+        rect.top = y
+        rect.left = x
+        lista.append(rect)
+        superficie.blit(imagen, rect)
+        x+=44
+    return lista
+def estrellavertical(imagen,superficie,x,z,lista):
     y=0
-    while y<=600:
+    while y<=z:
         rect=imagen.get_rect()
         rect.top=y
         rect.left=x
         lista.append(rect)
         superficie.blit(imagen, rect)
-        y+=52
+        y+=46
 def generarrect(imagen,superficie,x,y,lista):
     rect=imagen.get_rect()
     rect.top=y
@@ -58,6 +100,8 @@ def ventanap():#ventana principal
     raton = pygame.image.load("ratonf.png").convert_alpha()#imágen ratón
     fondo=pygame.image.load("fondohojas.jpg").convert()#fondo nivel 1
     fondo2=pygame.image.load("arena.png").convert() #fondo nivel 2
+    fondo3=pygame.image.load("agua.png").convert()
+    estrella=pygame.image.load("estrella.png").convert_alpha()
     vx,vy=0,0
     y=50
     x=50
@@ -363,26 +407,169 @@ def ventanap():#ventana principal
     rq5.left=428
     rq5.top=505
     #Crear a los enemigos
+    spritee1=pygame.sprite.Sprite()
     e1=pygame.image.load("ratonmalo.png")
-    re1=e1.get_rect()
-    re1.left=360
-    re1.top=50
-    re1vx=0
-    re1vy=0
+    spritee1.image=e1
+    spritee1.rect=e1.get_rect()
+    spritee1.rect.left=360
+    spritee1.rect.top=50
+    spritee1.vx=0
+    spritee1.vy=0
+    spritee1.velocidad = 5
+    spritee1.min = 50
+    spritee1.max = 850
+    spritee1.direccion = True
+    spritee1.vertical = False
+    spritee2=pygame.sprite.Sprite()
     e2=pygame.image.load("ratonmalo.png")
-    re2=e2.get_rect()
-    re2.left=643
-    re2.top=50
+    spritee2.image=e2
+    spritee2.rect=e2.get_rect()
+    spritee2.rect.left=643
+    spritee2.rect.top=50
+    spritee2.velocidad = 5
+    spritee2.vx=0
+    spritee2.vy=0
+    spritee2.min = 50
+    spritee2.max = 500
+    spritee2.direccion = True
+    spritee2.vertical = True
+    spritee3=pygame.sprite.Sprite()
     e3=pygame.image.load("ratonmalo.png")
-    re3=e3.get_rect()
-    re3.left=50
-    re3.top=510
+    spritee3.image=e3
+    spritee3.rect=e3.get_rect()
+    spritee3.rect.left=50
+    spritee3.rect.top=510
+    spritee3.velocidad = 5
+    spritee3.vx=0
+    spritee3.vy=0
+    spritee3.min = 50
+    spritee3.max = 500
+    spritee3.direccion = True
+    spritee3.vertical = True
+    spritee4=pygame.sprite.Sprite()
     e4=pygame.image.load("ratonmalo.png")
-    re4=e4.get_rect()
-    re4.left=820
-    re4.top=510
+    spritee4.image=e4
+    spritee4.rect=e4.get_rect()
+    spritee4.rect.left=820
+    spritee4.rect.top=510
+    spritee4.velocidad = 5
+    spritee4.vx=0
+    spritee4.vy=0
+    spritee4.min = 50
+    spritee4.max = 500
+    spritee4.direccion = True
+    spritee4.vertical = True
     #Lista de los rectangulos de los ratones malos 
-    l_ratonesm=[re1,re2,re3,re4]
+    l_ratonesm=[spritee1.rect,spritee2.rect,spritee3.rect,spritee4.rect]
+    #enemigos nivel 2
+    spritee5=pygame.sprite.Sprite()
+    e5=pygame.image.load("ratonmalo.png")
+    spritee5.image=e5
+    spritee5.rect=e5.get_rect()
+    spritee5.rect.left=184
+    spritee5.rect.top=496
+    spritee5.vx=0
+    spritee5.vy=0
+    spritee5.velocidad = 7
+    spritee5.min = 50
+    spritee5.max = 368
+    spritee5.direccion = True
+    spritee5.vertical = False
+    spritee6=pygame.sprite.Sprite()
+    e6=pygame.image.load("ratonmalo.png")
+    spritee6.image=e6
+    spritee6.rect=e6.get_rect()
+    spritee6.rect.left=414
+    spritee6.rect.top=54
+    spritee6.velocidad = 7
+    spritee6.vx=0
+    spritee6.vy=0
+    spritee6.min = 46
+    spritee6.max = 414
+    spritee6.direccion = True
+    spritee6.vertical = False
+    spritee7=pygame.sprite.Sprite()
+    e7=pygame.image.load("ratonmalo.png")
+    spritee7.image=e7
+    spritee7.rect=e7.get_rect()
+    spritee7.rect.left=556
+    spritee7.rect.top=104
+    spritee7.velocidad = 8
+    spritee7.vx=0
+    spritee7.vy=0
+    spritee7.min = 556
+    spritee7.max = 873
+    spritee7.direccion = True
+    spritee7.vertical = False
+    spritee8=pygame.sprite.Sprite()
+    e8=pygame.image.load("ratonmalo.png")
+    spritee8.image=e8
+    spritee8.rect=e8.get_rect()
+    spritee8.rect.left=811
+    spritee8.rect.top=208
+    spritee8.velocidad = 7
+    spritee8.vx=0
+    spritee8.vy=0
+    spritee8.min = 208
+    spritee8.max = 416
+    spritee8.direccion = True
+    spritee8.vertical = True
+    l_ratonesm2=[spritee5.rect,spritee6.rect,spritee7.rect,spritee8.rect]
+    #enemigos nivel 3
+    spritee9=pygame.sprite.Sprite()
+    e9=pygame.image.load("ratonmalo.png")
+    spritee9.image=e9
+    spritee9.rect=e9.get_rect()
+    spritee9.rect.left=748
+    spritee9.rect.top=46
+    spritee9.vx=0
+    spritee9.vy=0
+    spritee9.velocidad = 10
+    spritee9.min = 50
+    spritee9.max = 748
+    spritee9.direccion = True
+    spritee9.vertical = False
+    spritee10=pygame.sprite.Sprite()
+    e10=pygame.image.load("ratonmalo.png")
+    spritee10.image=e10
+    spritee10.rect=e10.get_rect()
+    spritee10.rect.left=835
+    spritee10.rect.top=46
+    spritee10.velocidad = 10
+    spritee10.vx=0
+    spritee10.vy=0
+    spritee10.min = 46
+    spritee10.max = 554
+    spritee10.direccion = True
+    spritee10.vertical = True
+    spritee11=pygame.sprite.Sprite()
+    e11=pygame.image.load("ratonmalo.png")
+    spritee11.image=e11
+    spritee11.rect=e11.get_rect()
+    spritee11.rect.left=44
+    spritee11.rect.top=554
+    spritee11.velocidad = 10
+    spritee11.vx=0
+    spritee11.vy=0
+    spritee11.min = 50
+    spritee11.max = 554
+    spritee11.direccion = True
+    spritee11.vertical = True
+    spritee12=pygame.sprite.Sprite()
+    e12=pygame.image.load("ratonmalo.png")
+    spritee12.image=e12
+    spritee12.rect=e12.get_rect()
+    spritee12.rect.left=88
+    spritee12.rect.top=322
+    spritee12.velocidad = 10
+    spritee12.vx=0
+    spritee12.vy=0
+    spritee12.min = 88
+    spritee12.max = 748
+    spritee12.direccion = True
+    spritee12.vertical = False
+    l_ratonesm23=[spritee9.rect,spritee10.rect,spritee11.rect,spritee12.rect]
+    
     #Listas de los rectangulos
     l_ro = [
         ro1,
@@ -499,7 +686,12 @@ def ventanap():#ventana principal
 
     #Variable para iniciar el juego cuando el jugador presiona enter
     inicio_juego = False
-    
+
+    #Variable para identificar que pasaste el nivel dos 
+    pasn2= False
+
+    #Variable para identificar que pasaste al mivel tres
+    pasn3= False
     while True:
         if pygame.mouse.get_pressed()[0]:
             mouse_b = pygame.mouse.get_pos()
@@ -597,27 +789,35 @@ def ventanap():#ventana principal
             rq5.left = 428
             rq5.top = 505
             pantalla.blit(queso5,rq5)
+
+            movimiento_raton(spritee1)
+            movimiento_raton(spritee2)
+            movimiento_raton(spritee3)
+            movimiento_raton(spritee4)
+            
                 
 
             for rec_ratonmalo in l_ratonesm:
                 if spriteraton.rect.colliderect(rec_ratonmalo):
-                    spriteraton.rect.move_ip(-vx,-vy)
-                    vida-=1
-                    spriteraton.rect.top=70
-                    spriteraton.rect.left=70
-            if vida==0:
+                    if vida:
+                        vida-=1
+                        spriteraton.rect.top=70
+                        spriteraton.rect.left=70
+            if vida==0: 
                 perdio=True
                 pantalla.blit(info4,(300,250))
                 
     
             #mostrar en pantalla a los enemigos
-            pantalla.blit(e1,re1)
-            pantalla.blit(e2,re2)
-            pantalla.blit(e3,re3)
-            pantalla.blit(e4,re4)
+            pantalla.blit(e1,spritee1.rect)
+            pantalla.blit(e2,spritee2.rect)
+            pantalla.blit(e3,spritee3.rect)
+            pantalla.blit(e4,spritee4.rect)
             #mostrar en pantalla al jugador (raton)
             pantalla.blit(spriteraton.image, spriteraton.rect)
             #mostrar en pantalla el contador del reloj
+            level1=fuente1.render("Level 1", 0, (255,255,255))
+            pantalla.blit(level1, (5,565))
             pantalla.blit(info, (5,5))
             pantalla.blit(info2, (350,5))
             pantalla.blit(info3, (650,5))
@@ -643,178 +843,335 @@ def ventanap():#ventana principal
             pantalla.blit(contador,(100,5))
 
         #cambio de nivel (nivel 2)
+##            if puntaje2==2500:
+##                pantalla.blit(fondo2, (0,0))
+##                planta=pygame.image.load("planta.png")
+##                l_plantas=[]
+##                plantahorizontal(planta,pantalla,0,l_plantas)
+##                plantahorizontal(planta,pantalla,548,l_plantas)
+##                plantavertical(planta,pantalla,0,l_plantas)
+##                plantavertical(planta,pantalla,877,l_plantas)
+##                colision(spriteraton,l_plantas)
+##                pantalla.blit(spriteraton.image, spriteraton.rect)
+##                l_ratonesm=[]
+##                segundosn2=pygame.time.get_ticks()/1000-(int(segundos))
+##                pantalla.blit(contador, (100,5))
+##                infopuntaje2=fuente1.render(str(puntaje1), 0, (255,255,255))
+##                pantalla.blit(infopuntaje2, (410,5))
+##                pantalla.blit(infovida, (750,5))
+##                pantalla.blit(info, (5,5))
+##                pantalla.blit(info2, (350,5))
+##                pantalla.blit(info3, (650,5))
+##                pantalla.blit(vidas, (700,5))
+##              level2=fuente1.render("Level 2", 0, (255,255,255))
+##              pantalla.blit(level2, (5,565))
+##                l_ro=[]
+##                l_rn=[]
+##                l_m=[]
+##                #paredes del laberinto nivel 2 
+##                generarrect(planta,pantalla,90,104,l_plantas)
+##                generarrect(planta,pantalla,90,156,l_plantas)
+##                generarrect(planta,pantalla,90,208,l_plantas)
+##                generarrect(planta,pantalla,90,260,l_plantas)
+##                generarrect(planta,pantalla,90,312,l_plantas)
+##                generarrect(planta,pantalla,90,364,l_plantas)
+##                generarrect(planta,pantalla,90,416,l_plantas)
+##                generarrect(planta,pantalla,136,416,l_plantas)
+##                generarrect(planta,pantalla,182,416,l_plantas)
+##                generarrect(planta,pantalla,228,416,l_plantas)
+##                generarrect(planta,pantalla,228,104,l_plantas)
+##                generarrect(planta,pantalla,228,156,l_plantas)
+##                generarrect(planta,pantalla,228,208,l_plantas)
+##                generarrect(planta,pantalla,228,260,l_plantas)
+##                generarrect(planta,pantalla,228,312,l_plantas)
+##                generarrect(planta,pantalla,228,364,l_plantas)
+##                generarrect(planta,pantalla,228,416,l_plantas)
+##                generarrect(planta,pantalla,274,104,l_plantas)
+##                generarrect(planta,pantalla,320,104,l_plantas)
+##                generarrect(planta,pantalla,366,104,l_plantas)
+##                generarrect(planta,pantalla,366,156,l_plantas)
+##                generarrect(planta,pantalla,366,208,l_plantas)
+##                generarrect(planta,pantalla,366,349,l_plantas)
+##                generarrect(planta,pantalla,366,401,l_plantas)
+##                generarrect(planta,pantalla,366,453,l_plantas)
+##                generarrect(planta,pantalla,412,453,l_plantas)
+##                generarrect(planta,pantalla,458,453,l_plantas)
+##                generarrect(planta,pantalla,504,453,l_plantas)
+##                generarrect(planta,pantalla,550,453,l_plantas)
+##                generarrect(planta,pantalla,550,401,l_plantas)
+##                generarrect(planta,pantalla,550,349,l_plantas)
+##                generarrect(planta,pantalla,550,297,l_plantas)
+##                generarrect(planta,pantalla,550,245,l_plantas)
+##                generarrect(planta,pantalla,550,193,l_plantas)
+##                generarrect(planta,pantalla,550,141,l_plantas)
+##                generarrect(planta,pantalla,596,141,l_plantas)
+##                generarrect(planta,pantalla,642,141,l_plantas)
+##                generarrect(planta,pantalla,458,141,l_plantas)
+##                generarrect(planta,pantalla,458,193,l_plantas)
+##                generarrect(planta,pantalla,458,245,l_plantas)
+##                generarrect(planta,pantalla,458,297,l_plantas)
+##                generarrect(planta,pantalla,458,349,l_plantas)
+##                generarrect(planta,pantalla,458,401,l_plantas)
+##                generarrect(planta,pantalla,458,453,l_plantas)
+##                generarrect(planta,pantalla,831,453,l_plantas)
+##                generarrect(planta,pantalla,785,453,l_plantas)
+##                generarrect(planta,pantalla,739,453,l_plantas)
+##                generarrect(planta,pantalla,739,401,l_plantas)
+##                generarrect(planta,pantalla,739,349,l_plantas)
+##                generarrect(planta,pantalla,739,297,l_plantas)
+##                generarrect(planta,pantalla,739,245,l_plantas)
+##                generarrect(planta,pantalla,739,193,l_plantas)
+##                generarrect(planta,pantalla,739,453,l_plantas)
+##                generarrect(planta,pantalla,739,141,l_plantas)
+##                #Colision del raton con los quesos
+##                Q2 = pygame.image.load("quesocomido.png")
+##                
+##                #Crear los quesos n2
+##                if not pasn2:
+##                    spriteraton.rect.top=70
+##                    spriteraton.rect.left=70
+##                    spriteraton.rect.move_ip(vx,vy)
+##                    puntajeqq1,puntajeqq2,puntajeqq3,puntajeqq4,puntajeqq5=500,500,500,500,500
+##                    pasn2=True 
+##                    queso11=pygame.image.load("queso.png")
+##                    q11=queso11
+##                    rqq1=q11.get_rect()
+##                    rqq1.left = 820
+##                    rqq1.top = 157
+##                    queso22=pygame.image.load("queso.png")
+##                    q22=queso22
+##                    rqq2=q22.get_rect()
+##                    rqq2.left=604
+##                    rqq2.top=300
+##                    queso33=pygame.image.load("queso.png")
+##                    q33=queso33
+##                    rqq3=q33.get_rect()
+##                    rqq3.left=188
+##                    rqq3.top=512
+##                    queso44=pygame.image.load("queso.png")
+##                    q44=queso44
+##                    rqq4=q44.get_rect()
+##                    rqq4.left=152
+##                    rqq4.top=235
+##                    queso55=pygame.image.load("queso.png")
+##                    q55=queso55
+##                    rqq5=q55.get_rect()
+##                    rqq5.left=510
+##                    rqq5.top=401
+##                
+##                if spriteraton.rect.colliderect(rqq1) and queso11!=Q:
+##                    queso11 = Q
+##                    puntaje1=puntaje1+puntajeqq1
+##                    puntajeqq1=0
+##                rqq1 = queso1.get_rect()
+##                rqq1.left = 820
+##                rqq1.top = 257
+##                pantalla.blit(queso11,rqq1)
+##            
+##                if spriteraton.rect.colliderect(rqq2) and queso22!=Q:
+##                    queso22 = Q
+##                    puntaje1=puntaje1+puntajeqq2
+##                    puntajeqq2=0
+##                rqq2 = queso22.get_rect()
+##                rqq2.left = 604
+##                rqq2.top = 300
+##                pantalla.blit(queso22,rqq2)
+##                
+##                if spriteraton.rect.colliderect(rqq3) and queso33!=Q:
+##                    queso33 = Q
+##                    puntaje1=puntaje1+puntajeqq3
+##                    puntajeqq3=0
+##                rqq3 = queso33.get_rect()
+##                rqq3.left = 188
+##                rqq3.top = 512
+##                pantalla.blit(queso33,rqq3)
+##                
+##                if spriteraton.rect.colliderect(rqq4) and queso44!=Q:
+##                    queso44 = Q
+##                    puntaje1=puntaje1+puntajeqq4
+##                    puntajeqq4=0
+##                rqq4 = queso44.get_rect()
+##                rqq4.left = 152
+##                rqq4.top = 235
+##                pantalla.blit(queso44,rqq4)
+##                
+##                if spriteraton.rect.colliderect(rqq5) and queso55!=Q:
+##                    queso55 = Q
+##                    puntaje1=puntaje1+puntajeqq5
+##                    puntajeqq5=0
+##                rqq5 = queso55.get_rect()
+##                rqq5.left = 510
+##                rqq5.top = 401
+##                pantalla.blit(queso55,rqq5)
+##                
+##                #colision de las plantas con el raton
+##                colision(spriteraton,l_plantas)
+##               #Crear a los enemigos
+##                
+##                movimiento_raton(spritee5)
+##                movimiento_raton(spritee6)
+##                movimiento_raton(spritee7)
+##                movimiento_raton(spritee8)
+##                for rec_ratonmalo in l_ratonesm2:
+##                    if spriteraton.rect.colliderect(rec_ratonmalo):
+##                        if vida:
+##                            vida-=1
+##                            spriteraton.rect.top=70
+##                            spriteraton.rect.left=70
+##                if vida==0:
+##                    perdio=True
+##                    pantalla.blit(info4,(300,250))
+##                #mostrar en pantalla a los enemigos nivel 2
+##                pantalla.blit(e5,spritee5.rect)
+##                pantalla.blit(e6,spritee6.rect)
+##                pantalla.blit(e7,spritee7.rect)
+##                pantalla.blit(e8,spritee8.rect)
+##                while segundos<61 and not(perdio):
+##                    segundos=str(segundos)
+##                    contador=fuente1.render(segundos,0,(255,255,255))#contador para la pantalla
+##                    pantalla.blit(contador,(100,5))
+##                if segundos ==61 or perdio:
+##                    vx,vy=0,0
+##                    if perdio:
+##                        t_contador = "Game Over"
+##                    else:
+##                        t_contador = "Time Over"
             if puntaje2==2500:
-                pantalla.blit(fondo2, (0,0))
-                planta=pygame.image.load("planta.png")
+                l_estrella=[]
+                l_ratonesm2=[]
                 l_plantas=[]
-                plantahorizontal(planta,pantalla,0,l_plantas)
-                plantahorizontal(planta,pantalla,548,l_plantas)
-                plantavertical(planta,pantalla,0,l_plantas)
-                plantavertical(planta,pantalla,877,l_plantas)
-                colision(spriteraton,l_plantas)
+                pantalla.blit(fondo3, (0,0))
                 pantalla.blit(spriteraton.image, spriteraton.rect)
-                l_ratonesm=[]
-                segundosn2=pygame.time.get_ticks()/1000-(int(segundos)+segundosInit)
-                pantalla.blit(contador, (100,5))
-                pantalla.blit(infopuntaje, (410,5))
+                estrellahorizontal(estrella,pantalla,0,930,l_estrella)
+                estrellahorizontal(estrella,pantalla,554,930,l_estrella)
+                estrellavertical(estrella,pantalla,0,600,l_estrella)
+                estrellavertical(estrella,pantalla,879,600,l_estrella)
+                horizontal(estrella,pantalla,88,92,835,l_estrella)
+                horizontal(estrella,pantalla,88,184,835,l_estrella)
+                horizontal(estrella,pantalla,88,276,835,l_estrella)
+                horizontal(estrella,pantalla,88,368,835,l_estrella)
+                horizontal(estrella,pantalla,88,460,835,l_estrella)
+                horizontal(estrella,pantalla,88,552,835,l_estrella)
+                generarrect(estrella,pantalla,792,46,l_estrella)
+                generarrect(estrella,pantalla,88,230,l_estrella)
+                generarrect(estrella,pantalla,792,414,l_estrella)
+                colision(spriteraton,l_estrella)
+                infopuntaje3=fuente1.render(str(puntaje2), 0, (0,0,0))
+                infovida=fuente1.render(str(vida), 0, (0,0,0))
+                info=fuente1.render("Time", 0, (0,0,0))
+                info2=fuente1.render("Score", 0, (0,0,0))
+                info3=fuente1.render("Lives",0,(0,0,0))
+                info4=fuente4.render("You Lose :(",0,(0,0,0))
+                level3=fuente1.render("Level 3", 0, (0,0,0))
+                pantalla.blit(infopuntaje3, (410,5))
                 pantalla.blit(infovida, (750,5))
                 pantalla.blit(info, (5,5))
                 pantalla.blit(info2, (350,5))
                 pantalla.blit(info3, (650,5))
                 pantalla.blit(vidas, (700,5))
-                l_ro=[]
-                l_rn=[]
-                l_m=[]
-                vida=3
-                #paredes del laberinto nivel 2 
-                generarrect(planta,pantalla,90,104,l_plantas)
-                generarrect(planta,pantalla,90,156,l_plantas)
-                generarrect(planta,pantalla,90,208,l_plantas)
-                generarrect(planta,pantalla,90,260,l_plantas)
-                generarrect(planta,pantalla,90,312,l_plantas)
-                generarrect(planta,pantalla,90,364,l_plantas)
-                generarrect(planta,pantalla,90,416,l_plantas)
-                generarrect(planta,pantalla,136,416,l_plantas)
-                generarrect(planta,pantalla,182,416,l_plantas)
-                generarrect(planta,pantalla,228,416,l_plantas)
-                generarrect(planta,pantalla,228,104,l_plantas)
-                generarrect(planta,pantalla,228,156,l_plantas)
-                generarrect(planta,pantalla,228,208,l_plantas)
-                generarrect(planta,pantalla,228,260,l_plantas)
-                generarrect(planta,pantalla,228,312,l_plantas)
-                generarrect(planta,pantalla,228,364,l_plantas)
-                generarrect(planta,pantalla,228,416,l_plantas)
-                generarrect(planta,pantalla,274,104,l_plantas)
-                generarrect(planta,pantalla,320,104,l_plantas)
-                generarrect(planta,pantalla,366,104,l_plantas)
-                generarrect(planta,pantalla,366,156,l_plantas)
-                generarrect(planta,pantalla,366,208,l_plantas)
-                generarrect(planta,pantalla,366,349,l_plantas)
-                generarrect(planta,pantalla,366,401,l_plantas)
-                generarrect(planta,pantalla,366,453,l_plantas)
-                generarrect(planta,pantalla,412,453,l_plantas)
-                generarrect(planta,pantalla,458,453,l_plantas)
-                generarrect(planta,pantalla,504,453,l_plantas)
-                generarrect(planta,pantalla,550,453,l_plantas)
-                generarrect(planta,pantalla,550,401,l_plantas)
-                generarrect(planta,pantalla,550,349,l_plantas)
-                generarrect(planta,pantalla,550,297,l_plantas)
-                generarrect(planta,pantalla,550,245,l_plantas)
-                generarrect(planta,pantalla,550,193,l_plantas)
-                generarrect(planta,pantalla,550,141,l_plantas)
-                generarrect(planta,pantalla,596,141,l_plantas)
-                generarrect(planta,pantalla,642,141,l_plantas)
-                generarrect(planta,pantalla,458,141,l_plantas)
-                generarrect(planta,pantalla,458,193,l_plantas)
-                generarrect(planta,pantalla,458,245,l_plantas)
-                generarrect(planta,pantalla,458,297,l_plantas)
-                generarrect(planta,pantalla,458,349,l_plantas)
-                generarrect(planta,pantalla,458,401,l_plantas)
-                generarrect(planta,pantalla,458,453,l_plantas)
-                generarrect(planta,pantalla,831,453,l_plantas)
-                generarrect(planta,pantalla,785,453,l_plantas)
-                generarrect(planta,pantalla,739,453,l_plantas)
-                generarrect(planta,pantalla,739,401,l_plantas)
-                generarrect(planta,pantalla,739,349,l_plantas)
-                generarrect(planta,pantalla,739,297,l_plantas)
-                generarrect(planta,pantalla,739,245,l_plantas)
-                generarrect(planta,pantalla,739,193,l_plantas)
-                generarrect(planta,pantalla,739,453,l_plantas)
-                generarrect(planta,pantalla,739,141,l_plantas)
-                #Colision del raton con los quesos
-                queso22=pygame.image.load("queso.png")
-                Q2 = pygame.image.load("quesocomido.png")
-                puntajeqq1,puntajeqq2,puntajeqq3,puntajeqq4,puntajeqq5=500,500,500,500,500
-                #Crear los quesos 
-                queso11=pygame.image.load("queso.png")
-                q11=queso11
-                rqq1=q11.get_rect()
-                rqq1.left = 820
-                rqq1.top = 50
-                queso22=pygame.image.load("queso.png")
-                q22=queso22
-                rqq2=q22.get_rect()
-                rqq2.left=650
-                rqq2.top=300
-                queso33=pygame.image.load("queso.png")
-                q33=queso33
-                rqq3=q33.get_rect()
-                rqq3.left=50
-                rqq3.top=450
-                queso44=pygame.image.load("queso.png")
-                q44=queso44
-                rqq4=q44.get_rect()
-                rqq4.left=215
-                rqq4.top=235
-                queso55=pygame.image.load("queso.png")
-                q55=queso55
-                rqq5=q55.get_rect()
-                rqq5.left=428
-                rqq5.top=505
+                pantalla.blit(level3, (5,565))
+                contador=fuente1.render(str(segundos),0,(0,0,0))
+                pantalla.blit(contador,(100,5))
+                Q3 = pygame.image.load("quesocomido.png")
+                #Crear los quesos n3
+                if not pasn3:
+                    spriteraton.rect.top=70
+                    spriteraton.rect.left=70
+                    spriteraton.rect.move_ip(vx,vy)
+                    puntajeqqq1,puntajeqqq2,puntajeqqq3,puntajeqqq4,puntajeqqq5=500,500,500,500,500
+                    pasn3=True 
+                    queso111=pygame.image.load("queso.png")
+                    q111=queso111
+                    rqqq1=q111.get_rect()
+                    rqqq1.left = 484
+                    rqqq1.top = 46
+                    queso222=pygame.image.load("queso.png")
+                    q222=queso222
+                    rqqq2=q222.get_rect()
+                    rqqq2.left=835
+                    rqqq2.top=138
+                    queso333=pygame.image.load("queso.png")
+                    q333=queso333
+                    rqqq3=q333.get_rect()
+                    rqqq3.left=484
+                    rqqq3.top=329
+                    queso444=pygame.image.load("queso.png")
+                    q444=queso444
+                    rqqq4=q444.get_rect()
+                    rqqq4.left=152
+                    rqqq4.top=235
+                    queso555=pygame.image.load("queso.png")
+                    q555=queso555
+                    rqqq5=q555.get_rect()
+                    rqqq5.left=510
+                    rqqq5.top=423
                 
-                if spriteraton.rect.colliderect(rqq1):
-                    queso11 = Q2
-                    puntaje1=puntaje1+puntajeqq1
-                    puntajeqq1=0
-                rqq1 = queso1.get_rect()
-                rqq1.left = 820
-                rqq1.top = 50
-                pantalla.blit(queso11,rqq1)
+                if spriteraton.rect.colliderect(rqqq1) and queso111!=Q:
+                    queso111 = Q
+                    puntaje3=puntaje3+puntajeqqq1
+                    puntajeqqq1=0
+                rqqq1 = queso1.get_rect()
+                rqqq1.left = 484
+                rqqq1.top = 46
+                pantalla.blit(queso111,rqqq1)
             
-                if spriteraton.rect.colliderect(rqq2):
-                    queso22 = Q2
-                    puntaje1=puntaje1+puntajeqq2
-                    puntajeqq2=0
-                rqq2 = queso22.get_rect()
-                rqq2.left = 650
-                rqq2.top = 300
-                pantalla.blit(queso22,rqq2)
+                if spriteraton.rect.colliderect(rqqq2) and queso222!=Q:
+                    queso222 = Q
+                    puntaje3=puntaje3+puntajeqqq2
+                    puntajeqqq2=0
+                rqqq2 = queso222.get_rect()
+                rqqq2.left = 835
+                rqqq2.top = 138
+                pantalla.blit(queso222,rqqq2)
                 
-                if spriteraton.rect.colliderect(rqq3):
-                    queso33 = Q2
-                    puntaje1=puntaje1+puntajeqq3
-                    puntajeqq3=0
-                rqq3 = queso33.get_rect()
-                rqq3.left = 50
-                rqq3.top = 450
-                pantalla.blit(queso33,rqq3)
+                if spriteraton.rect.colliderect(rqqq3) and queso333!=Q:
+                    queso333 = Q
+                    puntaje3=puntaje3+puntajeqqq3
+                    puntajeqqq3=0
+                rqqq3 = queso333.get_rect()
+                rqqq3.left = 484
+                rqqq3.top = 329
+                pantalla.blit(queso333,rqqq3)
                 
-                if spriteraton.rect.colliderect(rqq4):
-                    queso44 = Q2
-                    puntaje1=puntaje1+puntajeqq4
-                    puntajeqq4=0
-                rqq4 = queso44.get_rect()
-                rqq4.left = 215
-                rqq4.top = 235
-                pantalla.blit(queso44,rqq4)
+                if spriteraton.rect.colliderect(rqqq4) and queso444!=Q:
+                    queso444 = Q
+                    puntaje3=puntaje3+puntajeqqq4
+                    puntajeqqq4=0
+                rqqq4 = queso444.get_rect()
+                rqqq4.left = 152
+                rqqq4.top = 235
+                pantalla.blit(queso444,rqqq4)
                 
-                if spriteraton.rect.colliderect(rqq5):
-                    queso55 = Q2
-                    puntaje1=puntaje1+puntajeqq5
-                    puntajeqq5=0
-                rqq5 = queso55.get_rect()
-                rqq5.left = 428
-                rqq5.top = 505
-                pantalla.blit(queso55,rqq5)
+                if spriteraton.rect.colliderect(rqqq5) and queso555!=Q:
+                    queso555 = Q
+                    puntaje3=puntaje3+puntajeqq5
+                    puntajeqqq5=0
+                rqqq5 = queso555.get_rect()
+                rqqq5.left = 510
+                rqqq5.top = 423
+                pantalla.blit(queso555,rqqq5)
                 
+                movimiento_raton(spritee9)
+                movimiento_raton(spritee10)
+                movimiento_raton(spritee11)
+                movimiento_raton(spritee12)
+                pantalla.blit(e9,spritee9.rect)
+                pantalla.blit(e10,spritee10.rect)
+                pantalla.blit(e11,spritee11.rect)
+                pantalla.blit(e12,spritee12.rect)
                 
+                    
+                for rec_ratonmalo in l_ratonesm:
+                    if spriteraton.rect.colliderect(rec_ratonmalo):
+                        if vida:
+                            vida-=1
+                            spriteraton.rect.top=70
+                            spriteraton.rect.left=70
+                if vida==0: 
+                    perdio=True
+                    pantalla.blit(info4,(300,250))
                 
-                #colision de las plantas con el raton
-                colision(spriteraton,l_plantas)
-                                
-
-                while segundos<61 and not(perdio):
-                    segundos=str(segundos)
-                    contador=fuente1.render(segundos,0,(255,255,255))#contador para la pantalla
-                    pantalla.blit(contador,(100,5))
-                if segundos ==61 or perdio:
-                    vx,vy=0,0
-                    if perdio:
-                        t_contador = "Game Over"
-                    else:
-                        t_contador = "Time Over"
-
-                
+                 
                 
                 
         else:
